@@ -34,6 +34,42 @@ public struct TypeVariableBindings {
         }
         
         // <Q03 hint="understand data structure" />
+        if type1.id > type2.id {
+            switch map[type2] {
+            case .transfer(let rep):
+                setBinding(for: type1, .transfer(rep))
+            default:
+                setBinding(for: type1, .transfer(type2))
+            }
+            
+            // type1を指してるやつをtype2へ変える
+            for (tv, b) in map {
+                switch b {
+                case .transfer(let rep):
+                    if rep == type1 { map[tv] = .transfer(type2) }
+                default:
+                    do {}
+                }
+            }
+        } else {
+            switch map[type1] {
+            case .transfer(let rep):
+                setBinding(for: type2, .transfer(rep))
+            default:
+                setBinding(for: type2, .transfer(type1))
+            }
+            
+            // type2を指してるやつをtype1へ変える
+            for (tv, b) in map {
+                switch b {
+                case .transfer(let rep):
+                    if rep == type2 { map[tv] = .transfer(type1) }
+                default:
+                    do {}
+                }
+            }
+        }
+        print(map)
     }
     
     public mutating func assign(variable: TypeVariable,

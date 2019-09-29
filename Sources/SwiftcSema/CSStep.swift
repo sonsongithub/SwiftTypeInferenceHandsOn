@@ -69,6 +69,7 @@ extension ConstraintSystem {
             // consider priority for bindings and disjunctions
             
             // <Q10 hint="invoke substeps" />
+            // 
             
             if cts.hasFreeTypeVariables() {
                 return false

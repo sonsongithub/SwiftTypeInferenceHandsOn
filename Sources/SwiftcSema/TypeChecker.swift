@@ -45,7 +45,7 @@ public final class TypeChecker {
                     } else {
                         varTy = exprTy
                     }
-                    
+                    cts.addConstraint(kind: .bind, left: varTy, right: exprTy)
                     // <Q05 hint="call addConstraint"/>
             },
                 didFoundSolution: nil,

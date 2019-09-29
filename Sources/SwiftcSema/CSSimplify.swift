@@ -65,6 +65,14 @@ extension ConstraintSystem {
                                           options: options)
         case .valueToOptional:
             // <Q09 hint="see optionalToOptional" />
+            if let leftType = leftType as? PrimitiveType,
+                let rightType = rightType as? OptionalType
+            {
+                return matchTypes(kind: kind,
+                                  left: leftType,
+                                  right: rightType.wrapped,
+                                  options: subOptions)
+            }
             return .failure
         case .optionalToOptional:
             if let leftType = leftType as? OptionalType,
@@ -105,8 +113,12 @@ extension ConstraintSystem {
         var subOpts = options
         subOpts.generateConstraintsWhenAmbiguous = true
         
-        // <Q08 hint="think about semantics of appfn consts" />
+        addConstraint(kind: .bind, left: lfn.parameter, right: rfn.parameter)
+        addConstraint(kind: .bind, left: lfn.result, right: rfn.result)
+        addConstraint(kind: .bind, left: right, right: FunctionType(parameter: lfn.parameter, result: lfn.result))
         
+        // <Q08 hint="think about semantics of appfn consts" />
+
         return .solved
     }
     
